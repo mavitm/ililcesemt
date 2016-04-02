@@ -5,12 +5,18 @@ header("Content-Type: text/html; charset=UTF-8");
 set_include_path(get_include_path() . PATH_SEPARATOR . 'Classes/');
 include 'PHPExcel/IOFactory.php';
 
-function temizle($tr1) {
-    $turkce=array("ş","Ş","ı","ü","Ü","ö","Ö","ç","Ç","ş","Ş","ı","ğ","Ğ","İ","ö","Ö","Ç","ç","ü","Ü");
-    $duzgun=array("s","S","i","u","U","o","O","c","C","s","S","i","g","G","I","o","O","C","c","u","U");
-    $tr1=str_replace($turkce,$duzgun,$tr1);
-    $tr1 = preg_replace("@[^a-z0-9\-_şıüğçİŞĞÜÇ]+@i","-",$tr1);
-    return strtolower($tr1);
+function slugify($text)
+{
+    $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+    $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+    $text = preg_replace('~[^-\w]+~', '', $text);
+    $text = trim($text, '-');
+    $text = preg_replace('~-+~', '-', $text);
+    $text = strtolower($text);
+    if (empty($text))
+        return '-';
+
+    return $text;
 }
 
 function fileYaz($file, $data){
@@ -134,8 +140,7 @@ $illerSqlText = "
 CREATE TABLE IF NOT EXISTS `iller` (
   `id` int(11) NOT NULL,
   `adi` varchar(255) NOT NULL,
-  `sef` varchar(255) NOT NULL,
-  `modify_date` datetime DEFAULT NULL
+  `sef` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ";
 $illerSqlText .= "\n";
@@ -149,8 +154,7 @@ CREATE TABLE IF NOT EXISTS `ilceler` (
 `id` int(11) NOT NULL,
   `il_id` int(11) NOT NULL,
   `adi` varchar(255) NOT NULL,
-  `sef` varchar(255) NOT NULL,
-  `modify_date` datetime DEFAULT NULL
+  `sef` varchar(255) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
 ";
 $ilcelerSqlText .= "\n";
@@ -165,8 +169,7 @@ CREATE TABLE IF NOT EXISTS `semtler` (
   `il_id` int(11) NOT NULL,
   `ilce_id` int(11) NOT NULL,
   `adi` varchar(255) NOT NULL,
-  `sef` varchar(255) NOT NULL,
-  `modify_date` datetime DEFAULT NULL
+  `sef` varchar(255) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
 ";
 $semtSqlText .= "\n";
@@ -183,8 +186,7 @@ CREATE TABLE IF NOT EXISTS `mahalleler` (
   `semt_id` int(11) NOT NULL,
   `adi` varchar(255) NOT NULL,
   `sef` varchar(255) NOT NULL,
-  `pk` int(11) NOT NULL,
-  `modify_date` datetime DEFAULT NULL
+  `pk` int(11) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8
 ";
 $mahSqlText .= "\n";
@@ -218,7 +220,7 @@ foreach($dbData as $ilAdi=>$arr){
         $qx = 1;
     }
 
-    $illerSqlText .= sprintf($illerInSql[$qx],$il_id,$ilAdi,temizle($ilAdi));
+    $illerSqlText .= sprintf($illerInSql[$qx],$il_id,addslashes($ilAdi),slugify($ilAdi));
     $illerSqlText .= "\n";
 
     foreach($arr as $ilceAdi=>$smp){
@@ -232,7 +234,7 @@ foreach($dbData as $ilAdi=>$arr){
             $qx = 1;
         }
 
-        $ilcelerSqlText .= sprintf($illerInSql[$qx],$ilce_id,$il_id,$ilceAdi,temizle($ilceAdi));
+        $ilcelerSqlText .= sprintf($illerInSql[$qx],$ilce_id,$il_id,addslashes($ilceAdi),slugify($ilceAdi));
         $ilcelerSqlText .= "\n";
 
         $sx = 0;
@@ -255,12 +257,11 @@ foreach($dbData as $ilAdi=>$arr){
                 }
 
                 $currentSemt = $semtAdi;
-                $semtSqlText .= sprintf($semtInSql[$qx],$semt_id,$il_id,$ilce_id,$currentSemt,temizle($currentSemt));
+                $semtSqlText .= sprintf($semtInSql[$qx],$semt_id,$il_id,$ilce_id,addslashes($currentSemt),slugify($currentSemt));
                 $semtSqlText .= "\n";
                 $semt_id += 1;
                 $semtCount++;
             }
-
 
             if($MahCount < 1 || $MahCount >= $sqlLinear){
                 $qx = 0;
@@ -271,7 +272,7 @@ foreach($dbData as $ilAdi=>$arr){
                 $qx = 1;
             }
 
-            $mahSqlText .= sprintf($mahInSql[$qx],$mah_id,$il_id,$ilce_id,$semt_id,$mahAdi,temizle($mahAdi),$pkKodu);
+            $mahSqlText .= sprintf($mahInSql[$qx],$mah_id,$il_id,$ilce_id,$semt_id,addslashes($mahAdi),slugify($mahAdi),$pkKodu);
             $mahSqlText .= "\n";
 
             $sx++;
@@ -286,8 +287,7 @@ foreach($dbData as $ilAdi=>$arr){
     $ilCount++;
 }
 
-fileYaz("sqlData/iller.txt",rtrim(rtrim($illerSqlText,"\n"),",").';');
-fileYaz("sqlData/ilceler.txt",rtrim(rtrim($ilcelerSqlText,"\n"),",").';');
-fileYaz("sqlData/semtler.txt",rtrim(rtrim($semtSqlText,"\n"),",").';');
-fileYaz("sqlData/mahalle.txt",rtrim(rtrim($mahSqlText,"\n"),",").';');
-?>
+fileYaz("sqlData/iller.sql",rtrim(rtrim($illerSqlText,"\n"),",").';');
+fileYaz("sqlData/ilceler.sql",rtrim(rtrim($ilcelerSqlText,"\n"),",").';');
+fileYaz("sqlData/semtler.sql",rtrim(rtrim($semtSqlText,"\n"),",").';');
+fileYaz("sqlData/mahalle.sql",rtrim(rtrim($mahSqlText,"\n"),",").';');
