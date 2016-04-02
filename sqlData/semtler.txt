@@ -509,7 +509,7 @@ INSERT INTO semtler (id, il_id, ilce_id, adi, sef) VALUES ('1','1','1','ALADAĞ'
 ('497','69','170','MERKEZKÖYLER','merkezkoyler'),
 ('498','69','171','DEMİRÖZÜ','demirozu'),
 ('499','69','171','GÖKÇEDERE','gokcedere');
-('500','69','171','MERKEZKÖYLER','merkezkoyler'),
+INSERT INTO semtler (id, il_id, ilce_id, adi, sef) VALUES ('500','69','171','MERKEZKÖYLER','merkezkoyler'),
 ('501','69','172','BAYBURT','bayburt'),
 ('502','69','172','MADEN','maden'),
 ('503','69','172','MERKEZKÖYLER','merkezkoyler'),
@@ -1008,7 +1008,7 @@ INSERT INTO semtler (id, il_id, ilce_id, adi, sef) VALUES ('1','1','1','ALADAĞ'
 ('996','28','393','ESPİYE','espiye'),
 ('997','28','393','MERKEZKÖYLER','merkezkoyler'),
 ('998','28','394','EYNESİL','eynesil');
-('999','28','394','MERKEZKÖYLER','merkezkoyler'),
+INSERT INTO semtler (id, il_id, ilce_id, adi, sef) VALUES ('999','28','394','MERKEZKÖYLER','merkezkoyler'),
 ('1000','28','395','GÖRELE','gorele'),
 ('1001','28','395','MERKEZKÖYLER','merkezkoyler'),
 ('1002','28','396','GÜCE','guce'),
@@ -1507,7 +1507,7 @@ INSERT INTO semtler (id, il_id, ilce_id, adi, sef) VALUES ('1','1','1','ALADAĞ'
 ('1495','78','527','KAYABAŞI','kayabasi'),
 ('1496','78','527','MERKEZKÖYLER','merkezkoyler'),
 ('1497','78','527','YENİŞEHİR','yenisehir');
-('1498','78','528','MERKEZKÖYLER','merkezkoyler'),
+INSERT INTO semtler (id, il_id, ilce_id, adi, sef) VALUES ('1498','78','528','MERKEZKÖYLER','merkezkoyler'),
 ('1499','78','528','OVACIK','ovacik'),
 ('1500','78','529','MERKEZKÖYLER','merkezkoyler'),
 ('1501','78','529','SAFRANBOLU','safranbolu'),
@@ -2006,7 +2006,7 @@ INSERT INTO semtler (id, il_id, ilce_id, adi, sef) VALUES ('1','1','1','ALADAĞ'
 ('1994','50','742','CAMİCEDİT','camicedit'),
 ('1995','50','742','ÇARŞI','carsi'),
 ('1996','50','742','GÖRE','gore');
-('1997','50','742','GÖREME','goreme'),
+INSERT INTO semtler (id, il_id, ilce_id, adi, sef) VALUES ('1997','50','742','GÖREME','goreme'),
 ('1998','50','742','KAVAK','kavak'),
 ('1999','50','742','KAYMAKLI','kaymakli'),
 ('2000','50','742','MERKEZKÖYLER','merkezkoyler'),

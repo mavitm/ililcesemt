@@ -243,16 +243,17 @@ foreach($dbData as $ilAdi=>$arr){
             $mahAdi = $smpArr[1];
             $pkKodu = $smpArr[2];
 
-            if($semtCount < 1 || $semtCount >= $sqlLinear){
-                $qx = 0;
-                $semtCount = 1;
-                $semtSqlText = rtrim(rtrim($semtSqlText,"\n"),",").';';
-                $semtSqlText .= "\n";
-            }else{
-                $qx = 1;
-            }
+            if($sx < 1 || $currentSemt != $semtAdi){
 
-            if($sx < 1){
+                if($semtCount < 1 || $semtCount >= $sqlLinear){
+                    $qx = 0;
+                    $semtCount = 1;
+                    $semtSqlText = rtrim(rtrim($semtSqlText,"\n"),",").';';
+                    $semtSqlText .= "\n";
+                }else{
+                    $qx = 1;
+                }
+
                 $currentSemt = $semtAdi;
                 $semtSqlText .= sprintf($semtInSql[$qx],$semt_id,$il_id,$ilce_id,$currentSemt,temizle($currentSemt));
                 $semtSqlText .= "\n";
@@ -260,13 +261,6 @@ foreach($dbData as $ilAdi=>$arr){
                 $semtCount++;
             }
 
-            if($currentSemt != $semtAdi){
-                $currentSemt = $semtAdi;
-                $semtSqlText .= sprintf($semtInSql[$qx],$semt_id,$il_id,$ilce_id,$currentSemt,temizle($currentSemt));
-                $semtSqlText .= "\n";
-                $semt_id += 1;
-                $semtCount++;
-            }
 
             if($MahCount < 1 || $MahCount >= $sqlLinear){
                 $qx = 0;
@@ -297,7 +291,3 @@ fileYaz("sqlData/ilceler.txt",rtrim(rtrim($ilcelerSqlText,"\n"),",").';');
 fileYaz("sqlData/semtler.txt",rtrim(rtrim($semtSqlText,"\n"),",").';');
 fileYaz("sqlData/mahalle.txt",rtrim(rtrim($mahSqlText,"\n"),",").';');
 ?>
-
-
-
-
